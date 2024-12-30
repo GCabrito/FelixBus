@@ -39,6 +39,10 @@ body {
     font-size: 1rem;
 }
 
+.nav a {
+    color: #fff;
+}
+
 section {
     padding: 2rem 0;
 }
@@ -155,6 +159,83 @@ button {
 
 .contact {
     background: #f4f4f4;
+}
+
+/* Registro */
+.register-section {
+    background: #f9f9f9;
+}
+
+.register-section .container {
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: center;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.register-section h2 {
+    margin-top: -5px;
+    margin-bottom: 2rem;
+    color: rgb(3, 99, 0);
+    font-size: 2rem;
+}
+
+.register-section p {
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+    color: #666;
+}
+
+.register-form .form-group {
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.register-form .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.register-form .form-group input {
+    width: 95%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.register-form .btn {
+    background: rgb(3, 99, 0);
+    color: #fff;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 30%;
+}
+
+.register-form .btn:hover {
+    background: rgb(2, 80, 0);
+}
+
+.login-link {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+
+.login-link a {
+    color: rgb(3, 99, 0);
+    text-decoration: none;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
 }
 
 .footer {
