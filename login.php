@@ -1,9 +1,13 @@
+<?php
+    session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content=" nameth=device- nameth, initial-scale=1.0">
-    <title>FelixBus - Registo</title>
+    <title>FelixBus - Login</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -19,38 +23,21 @@
         </div>
     </header>
 
-    <section class="register-section">
+    <section class="login-section">
         <div class="container">
-            <h2>Crie a sua Conta</h2>
+            <h2>Faça login com a sua Conta</h2>
             <form class="register-form" action="register.php" method="post">
                 <div class="form-group">
                     <label for="name">Nome de Utilizador</label>
                     <input type="text" name="username" required>
                 </div>
                 <div class="form-group">
-                    <label for="name">Nome Completo</label>
-                    <input type="text" name="completeName" required>
-                </div>
-                <div class="form-group">
-                    <label for="name">Morada</label>
-                    <input type="text" name="address" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" name="email" required>
-                </div>
-                
-                <div class="form-group">
                     <label for="password">Password</label>
                     <input type="password" name="password" required>
                 </div>
-                <div class="form-group">
-                    <label for="confirm-password">Confirmar Password</label>
-                    <input type="password" name="confirm-password" required>
-                </div>
-                <button type="submit" class="btn">Registar</button>
+                <button type="submit" class="btn">Login</button>
             </form>
-            <p class="login-link">Já tem uma conta? <a href="login.html">Faça login</a></p>
+            <p class="login-link">Ainda não tem uma conta? <a href="register.php">Crie agora uma</a></p>
         </div>
     </section>
 
