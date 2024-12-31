@@ -18,6 +18,7 @@
                 <ul>
                     <li>Home</li>
                     <li>Perfil</li>
+                    <li>Transações</li>
                 </ul>
             </nav>
         </div>
@@ -33,19 +34,19 @@
                     <form action="update_profile.php" method="POST">
                         <div class="form-group">
                             <label for="username">Nome de Utilizador:</label>
-                            <input type="text" id="username" name="username" value="exemplo_usuario" required>
+                            <input type="text" id="username" name="username" placeholder="exemplo123" required>
                         </div>
                         <div class="form-group">
                             <label for="completeName">Nome Completo:</label>
-                            <input type="text" id="completeName" name="completeName" value="João Silva" required>
+                            <input type="text" id="completeName" name="completeName" placeholder="exemplo" required>
                         </div>
                         <div class="form-group">
                             <label for="email">Email:</label>
-                            <input type="email" id="email" name="email" value="joao.silva@email.com" required>
+                            <input type="email" id="email" name="email" placeholder="exemplo@gmail.com" required>
                         </div>
                         <div class="form-group">
                             <label for="address">Morada:</label>
-                            <input type="text" id="address" name="address" value="Rua Principal, 123" required>
+                            <input type="text" id="address" name="address" placeholder="Rua do Exemplo" required>
                         </div>
                         <div class="form-group">
                             <label for="password">Nova Palavra-passe:</label>

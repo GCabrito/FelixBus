@@ -14,6 +14,8 @@
                 <ul>
                     <li>Home</li>
                     <li>Perfil</li>
+                    <li>Área de Gestão</li> <!--apenas para funcionarios e admins -->
+                    <li>Área de Administração</li> <!--apenas para admins -->
                 </ul>
             </nav>
         </div>
