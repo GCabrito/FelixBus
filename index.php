@@ -1,3 +1,19 @@
+<?php
+session_start();
+
+
+$_SESSION['tipoUtilizador'] = "funcionario"; //variavel pra testar
+
+
+function podeAcessarAreaDeGestao() {
+    
+    $permissoes = ['admin', 'funcionario'];
+
+    
+    return isset($_SESSION['tipoUtilizador']) && in_array($_SESSION['tipoUtilizador'], $permissoes);
+}
+?>
+
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -12,10 +28,28 @@
             <h1 class="logo">FelixBus</h1>
             <nav class="nav">
                 <ul>
-                    <li>Home</li>
-                    <li>Perfil</li>
-                    <li>Área de Gestão</li> <!--apenas para funcionarios e admins -->
-                    <li>Área de Administração</li> <!--apenas para admins -->
+                    <form action="index.php" method="GET">
+                    <button>Home</button>
+</form>
+                    
+                    <form action="profile.php" method=”GET”>
+                    <button> Perfil </button>
+                     </form>
+                    
+                     
+                     <?php if (podeAcessarAreaDeGestao()): ?>
+        
+        <form action="managementArea.php" method="GET">  <!-- apenas para funcionários e admins -->
+            <button>Área de Gestão</button>
+        </form>
+    <?php endif; ?>
+                   
+                     <?php if ($_SESSION ['tipoUtilizador']=== "admin"): ?>
+                    <form action="adminArea.php" method="GET">
+                    <button>Área de Administração</button> <!--apenas para admins -->
+                    </form>
+                     <?php endif;?>   
+
                 </ul>
             </nav>
         </div>
@@ -33,9 +67,13 @@
                     <label for="chegada">Chegada:</label>
                     <input type="text" id="chegada" placeholder="Ex: Porto">
                 </div>
+                
                 <div class="pesquisarBtn" style="display: flex; align-items: flex-end;">
-                    <button>Pesquisar</button>
+                     <form action="viewRoutes.php" method=”GET”>
+                        <button>Pesquisar</button>
+                    </form>
                 </div>
+
             </div>
         </div>
     </section>
@@ -86,3 +124,4 @@
     </footer>
 </body>
 </html>
+
