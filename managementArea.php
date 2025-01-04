@@ -36,7 +36,7 @@
             <section class="results-section">
                 <h3>Detalhes do Utilizador</h3>
                 <div class="user-details">
-                    <div class="personal-info">
+                    <div class="persInfo-management">
                         <h4>Dados Pessoais</h4>
                         <form>
                             <label for="name">Nome Completo</label>

@@ -161,7 +161,6 @@ button {
     background: #f4f4f4;
 }
 
-/* Registro */
 .register-section .container {
     max-width: 500px;
     margin: 0 auto;
@@ -233,8 +232,6 @@ button {
 .login-link a:hover {
     text-decoration: underline;
 }
-
-/*Login*/
 
 .login-section {
     margin-top: 114px;
@@ -384,7 +381,6 @@ p {
     flex: 1;
 }
 
-/* Botões */
 .btn {
     display: inline-block;
     background: rgb(3, 99, 0);
@@ -536,7 +532,7 @@ p {
     flex-wrap: wrap;
 }
 
-.personal-info, .wallet-management {
+.persInfo-management, .wallet-management {
     background: white;
     padding: 1rem;
     border: 1px solid #ddd;
@@ -545,18 +541,18 @@ p {
     max-width: 48%;
 }
 
-.personal-info h4, .wallet-management h4 {
+.persInfo-management h4, .wallet-management h4 {
     color: #036300;
     margin-bottom: 1rem;
 }
 
-.personal-info form, .wallet-management form {
+.persInfo-management form, .wallet-management form {
     display: flex;
     flex-direction: column;
     gap: 1rem;
 }
 
-.personal-info form input,
+.persInfo-management form input,
 .wallet-management form input {
     padding: 0.8rem;
     border: 1px solid #ddd;
@@ -580,7 +576,6 @@ p {
     background-color: red;
 }
 
-/* Gestão de Bilhetes */
 .ticket-management table {
     width: 100%;
     border-collapse: collapse;
@@ -684,7 +679,6 @@ p {
     cursor: pointer;
 }
 
-/* Gestão de Utilizadores */
 .user-management {
     margin-bottom: 2rem;
 }

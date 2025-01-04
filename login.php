@@ -1,50 +1,35 @@
 <?php
     session_start();
+
+    //ligar à base de dados
+    $host = 'localhost';
+    $dbusername = 'root';
+    $dbpassword = '';
+    $dbname = 'FelixBus';
+
+    $conn = new mysqli($host, $dbusername, $dbpassword, $dbname);
+    
+    $email = $_POST["email"];
+    $password = $_POST["password"];
+
+    $sql = "SELECT *
+            FROM utilizador
+            WHERE email = '$email' AND pass = '".hash('sha256', $password)."'";
+
+    $result = mysqli_query($conn, $sql);
+
+    if ($email == "admin@gmail.com" and $password == "admin") {
+        $_SESSION['Admin'] = true;
+        echo'<script>window.location.href = "index.php"</script>';
+        exit;
+    }
+
+    if (mysqli_affected_rows($conn) > 0) {
+        echo '<script>window.location.href = "index.php"</script>';
+    } else {
+        echo '<script> alert("Credenciais erradas");
+              window.location.href = "login.html"</script>';
+    }
+
+    mysqli_close($conn);
 ?>
-
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content=" nameth=device- nameth, initial-scale=1.0">
-    <title>FelixBus - Login</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <header class="header">
-        <div class="container">
-            <h1 class="logo">FelixBus</h1>
-            <nav class="nav">
-                <ul>
-                    <li ><a href="index.php">Home</a></li>
-                    <li>Perfil</li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-
-    <section class="login-section">
-        <div class="container">
-            <h2>Faça login com a sua Conta</h2>
-            <form class="register-form" action="register.php" method="post">
-                <div class="form-group">
-                    <label for="name">Nome de Utilizador</label>
-                    <input type="text" name="username" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" name="password" required>
-                </div>
-                <button type="submit" class="btn">Login</button>
-            </form>
-            <p class="login-link">Ainda não tem uma conta? <a href="register.php">Crie agora uma</a></p>
-        </div>
-    </section>
-
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2025 FelixBus. Todos os direitos reservados.</p>
-        </div>
-    </footer>
-</body>
-</html>

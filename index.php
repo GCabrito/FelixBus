@@ -44,12 +44,12 @@ function podeAcessarAreaDeGestao() {
         </form>
     <?php endif; ?>
                    
-                     <?php if ($_SESSION ['tipoUtilizador']=== "admin"): ?>
-                    <form action="adminArea.php" method="GET">
-                    <button>Área de Administração</button> <!--apenas para admins -->
-                    </form>
-                     <?php endif;?>   
-
+                     <?php 
+                     if ($_SESSION ['admin'] = true)
+                     echo'<form action="adminArea.php" method="GET">
+                          <button>Área de Administração</button>
+                          </form>';
+                    ?>
                 </ul>
             </nav>
         </div>
@@ -124,4 +124,3 @@ function podeAcessarAreaDeGestao() {
     </footer>
 </body>
 </html>
-
