@@ -29,7 +29,7 @@
                 
                     <?php 
                         if (isset($_SESSION['admin']) or isset($_SESSION['funcionario'])) {
-                            echo'<form action="adminArea.php" method="GET">
+                            echo'<form action="managementArea.php" method="GET">
                                     <button>Área de Gestão</button>
                                  </form>';
                         }                
