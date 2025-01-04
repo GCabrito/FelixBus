@@ -1,17 +1,12 @@
 <?php
-session_start();
+    session_start();
 
+    $host = 'localhost';
+    $dbusername = 'root';
+    $dbpassword = '';
+    $dbname = 'FelixBus';
 
-$_SESSION['tipoUtilizador'] = "funcionario"; //variavel pra testar
-
-
-function podeAcessarAreaDeGestao() {
-    
-    $permissoes = ['admin', 'funcionario'];
-
-    
-    return isset($_SESSION['tipoUtilizador']) && in_array($_SESSION['tipoUtilizador'], $permissoes);
-}
+    $conn = new mysqli($host, $dbusername, $dbpassword, $dbname);
 ?>
 
 <!DOCTYPE html>
@@ -29,26 +24,55 @@ function podeAcessarAreaDeGestao() {
             <nav class="nav">
                 <ul>
                     <form action="index.php" method="GET">
-                    <button>Home</button>
-</form>
+                        <button>Home</button>
+                    </form>
+                
+                    <?php 
+                        if (isset($_SESSION['admin']) or isset($_SESSION['funcionario'])) {
+                            echo'<form action="adminArea.php" method="GET">
+                                    <button>Área de Gestão</button>
+                                 </form>';
+                        }                
                     
-                    <form action="profile.php" method=”GET”>
-                    <button> Perfil </button>
-                     </form>
-                    
-                     
-                     <?php if (podeAcessarAreaDeGestao()): ?>
-        
-        <form action="managementArea.php" method="GET">  <!-- apenas para funcionários e admins -->
-            <button>Área de Gestão</button>
-        </form>
-    <?php endif; ?>
-                   
-                     <?php 
-                     if ($_SESSION ['admin'] = true)
-                     echo'<form action="adminArea.php" method="GET">
-                          <button>Área de Administração</button>
-                          </form>';
+                        if (isset($_SESSION['admin'])) {
+                            echo'<form action="adminArea.php" method="GET">
+                                    <button>Área de Administração</button>
+                                 </form>';
+                        }
+                        
+                        if (isset($_SESSION["email"])) {
+                            $sqlNome = "SELECT nome
+                                        FROM utilizador
+                                        WHERE email = '" .$_SESSION["email"]."'";
+
+                            $resultNome = mysqli_query($conn, $sqlNome);
+
+                            while ($rowNome = mysqli_fetch_assoc($resultNome)) {
+                                echo '<form action="profile.php" method=”GET”>
+                                        <button><strong>' .$rowNome['nome']. '</strong></button>
+                                    </form>';
+                            }
+
+                            $sqlSaldo = "SELECT saldo
+                                        FROM utilizador
+                                        WHERE email = '" .$_SESSION["email"]."'";
+                                        
+                            $resultSaldo = mysqli_query($conn, $sqlSaldo);
+
+                            while ($rowSaldo = mysqli_fetch_assoc($resultSaldo)) {
+                                echo '<form action="profile.php" method=”GET”>
+                                        <button> Saldo: '  .$rowSaldo['saldo']. '€</button>
+                                    </form>';
+                            }
+
+                            echo '<form action="logout.php" method=”GET”>
+                                    <button> Terminar Sessão</button>
+                                </form>';
+                        } else {
+                            echo '<form action="login.html" method=”GET”>
+                                    <button> Iniciar Sessão </button>
+                                </form>';
+                        }
                     ?>
                 </ul>
             </nav>

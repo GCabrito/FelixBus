@@ -8,6 +8,9 @@
     $dbname = 'FelixBus';
 
     $conn = new mysqli($host, $dbusername, $dbpassword, $dbname);
+    if(! $conn ){
+        die('Could not connect: ' . mysqli_error($conn));
+    }
     
     $name = $_POST["name"];
     $address = $_POST["address"];
