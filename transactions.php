@@ -7,6 +7,9 @@
     $dbname = 'FelixBus';
 
     $conn = new mysqli($host, $dbusername, $dbpassword, $dbname);
+    if(! $conn ){
+        die('Could not connect: ' . mysqli_error($conn));
+    }
 ?>
 
 <!DOCTYPE html>

@@ -27,7 +27,7 @@
         $sql = "INSERT INTO utilizador (nome, pass, email, morada)
                 VALUES ('$name', '$encryptedPass', '$email', '$address')";
     
-        $retval = mysqli_query($conn, $sql);
+        $result = mysqli_query($conn, $sql);
 
         if (mysqli_affected_rows ($conn) == 1)
             echo ('<script> alert("Registado com sucesso! Pode fazer login assim que for validado");

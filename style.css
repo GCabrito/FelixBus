@@ -651,7 +651,7 @@ p {
 }
 
 .route-management th, .route-management td {
-    text-align: left;
+    text-align: center;
     padding: 1rem;
     border: 1px solid #ddd;
 }

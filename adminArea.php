@@ -7,6 +7,9 @@
     $dbname = 'FelixBus';
 
     $conn = new mysqli($host, $dbusername, $dbpassword, $dbname);
+    if(! $conn ){
+        die('Could not connect: ' . mysqli_error($conn));
+    }
 ?>
 
 <!DOCTYPE html>
@@ -86,34 +89,49 @@
             <!-- Gestão de Rotas -->
             <section class="route-management">
                 <h3>Gestão de Rotas</h3>
-                <form class="route-form">
+                <form class="route-form" action="createRoute.php" method="post">
                     <input type="text" name="origin" placeholder="Origem" required>
                     <input type="text" name="destination" placeholder="Destino" required>
-                    <input type="number" name="price" placeholder="Preço (€)" required>
+                    <input type="text" name="startTime" placeholder="Data e Hora Partida" required>
+                    <input type="text" name="arriveTime" placeholder="Data e Hora Chegada" required>
+                    <input type="number" step="0.01" min="0" name="price" placeholder="Preço (€)" required>
                     <button type="submit">Criar Rota</button>
                 </form>
                 <table>
                     <thead>
                         <tr>
-                            <th>ID</th>
                             <th>Origem</th>
                             <th>Destino</th>
+                            <th>Data e Hora Partida</th>
+                            <th>Data e Hora Chegada</th>
                             <th>Preço</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>#001</td>
-                            <td>Lisboa</td>
-                            <td>Porto</td>
-                            <td>€15</td>
-                            <td>
-                                <button class="edit">Editar</button>
-                                <button class="delete">Excluir</button>
-                            </td>
-                        </tr>
-                        <!-- Mais rotas podem ser adicionadas dinamicamente -->
+                        <?php
+                            $sqlRoutes = 'SELECT idBilhete, Partida, Chegada, dataPartida, dataChegada, Preço
+                                          FROM bilhete';
+
+                            $resultRoutes = mysqli_query($conn, $sqlRoutes);
+
+                            while ($row = mysqli_fetch_array($resultRoutes)) {
+                                echo '<tr>
+                                        <td>'.$row['Partida'].'</td>
+                                        <td>'.$row['Chegada'].'</td>
+                                        <td>'.$row['dataPartida'].'</td>
+                                        <td>'.$row['dataChegada'].'</td>
+                                        <td>'.$row['Preço'].'€</td>
+                                        <td>
+                                            <button class="edit">Editar</button>
+                                            <form action="deleteRoute.php" method="POST">
+                                                <input type="hidden" name="idBilhete" value="' . $row['idBilhete'] . '">
+                                                <button type="submit" class="delete">Excluir</button>
+                                            </form>
+                                        </td>
+                                    </tr>';
+                            }
+                        ?>
                     </tbody>
                 </table>
             </section>
