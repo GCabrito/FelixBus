@@ -105,12 +105,13 @@
                             <th>Data e Hora Partida</th>
                             <th>Data e Hora Chegada</th>
                             <th>Preço</th>
+                            <th>Capacidade</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
-                            $sqlRoutes = 'SELECT idBilhete, Partida, Chegada, dataPartida, dataChegada, Preço
+                            $sqlRoutes = 'SELECT idBilhete, Partida, Chegada, dataPartida, dataChegada, Preço, capacidade
                                           FROM bilhete';
 
                             $resultRoutes = mysqli_query($conn, $sqlRoutes);
@@ -122,8 +123,8 @@
                                         <td>'.$row['dataPartida'].'</td>
                                         <td>'.$row['dataChegada'].'</td>
                                         <td>'.$row['Preço'].'€</td>
+                                        <td>'.$row['capacidade'].'</td>
                                         <td>
-                                            <button class="edit">Editar</button>
                                             <form action="deleteRoute.php" method="POST">
                                                 <input type="hidden" name="idBilhete" value="' . $row['idBilhete'] . '">
                                                 <button type="submit" class="delete">Excluir</button>
@@ -139,20 +140,54 @@
             <!-- Gestão de Utilizadores -->
             <section class="user-management">
                 <h3>Gestão de Utilizadores</h3>
-                <form class="search-form">
-                    <input type="text" name="username" placeholder="Pesquisar utilizador" required>
+                <form class="search-form" action="searchUser.php" method="post">
+                    <input type="text" name="userEmail" placeholder="Pesquisar utilizador pelo email" required>
                     <button type="submit">Pesquisar</button>
                 </form>
                 <div class="user-details">
                     <h4>Detalhes do Utilizador</h4>
                     <form>
-                        <label for="name">Nome Completo</label>
-                        <input type="text" id="name" value="Exemplo Nome" readonly>
+                        <?php
+                            if (isset($_SESSION['searchUserEmail'])) {
+                                echo '<label for="name">Nome</label>
+                                    <input type="text" id="name" value="'.$_SESSION['searchUserName'].'" readonly>
 
-                        <label for="email">Email</label>
-                        <input type="email" id="email" value="exemplo@felixbus.com" readonly>
+                                    <label for="email">Email</label>
+                                    <input type="email" id="email" value="'.$_SESSION['searchUserEmail'].'" readonly>
+                                    
+                                    <label for="email">Password</label>
+                                    <input type="email" id="email" value="'.$_SESSION['searchUserPassword'].'" readonly>
+                                    
+                                    <label for="email">Morada</label>
+                                    <input type="email" id="email" value="'.$_SESSION['searchUserAdress'].'" readonly>
+                                    
+                                    <label for="email">Tipo de Utilizador</label>
+                                    <input type="email" id="email" value="'.$_SESSION['searchUserType'].'" readonly>
+                                    
+                                    <label for="email">Saldo</label>
+                                    <input type="email" id="email" value="'.$_SESSION['searchUserMoney'].'" readonly>';
+                            } else {
+                                echo '<label for="name">Nome</label>
+                                    <input type="text" id="name" value="" readonly>
 
-                        <label for="status">Status</label>
+                                    <label for="email">Email</label>
+                                    <input type="email" id="email" value="" readonly>
+                                    
+                                    <label for="email">Password</label>
+                                    <input type="email" id="email" value="" readonly>
+                                    
+                                    <label for="email">Morada</label>
+                                    <input type="email" id="email" value="" readonly>
+                                    
+                                    <label for="email">Tipo de Utilizador</label>
+                                    <input type="email" id="email" value="" readonly>
+                                    
+                                    <label for="email">Saldo</label>
+                                    <input type="email" id="email" value="" readonly>';
+                            }
+                        ?>
+
+                        <label for="status">Estado</label>
                         <select id="status">
                             <option value="valid">Válido</option>
                             <option value="invalid">Inválido</option>
