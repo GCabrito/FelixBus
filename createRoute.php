@@ -17,9 +17,10 @@
     $startTime = $_POST["startTime"];
     $arriveTime = $_POST["arriveTime"];
     $price = $_POST["price"];
+    $capacity = $_POST["capacity"];
 
-    $sql = "INSERT INTO bilhete (Partida, Chegada, dataPartida, dataChegada, Preço)
-            VALUES ('$origin', '$destination', '$startTime', '$arriveTime', '$price')";
+    $sql = "INSERT INTO bilhete (Partida, Chegada, dataPartida, dataChegada, Preço, Capacidade)
+            VALUES ('$origin', '$destination', '$startTime', '$arriveTime', '$price', '$capacity')";
 
     $result = mysqli_query($conn, $sql);
 

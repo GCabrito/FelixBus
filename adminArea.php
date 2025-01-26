@@ -95,6 +95,7 @@
                     <input type="text" name="startTime" placeholder="Data e Hora Partida" required>
                     <input type="text" name="arriveTime" placeholder="Data e Hora Chegada" required>
                     <input type="number" step="0.01" min="0" name="price" placeholder="Preço (€)" required>
+                    <input type="number" step="1" min="1" name="capacity" placeholder="Capacidade" required>
                     <button type="submit">Criar Rota</button>
                 </form>
                 <table>
@@ -111,7 +112,7 @@
                     </thead>
                     <tbody>
                         <?php
-                            $sqlRoutes = 'SELECT idBilhete, Partida, Chegada, dataPartida, dataChegada, Preço, capacidade
+                            $sqlRoutes = 'SELECT idBilhete, Partida, Chegada, dataPartida, dataChegada, Preço, Capacidade
                                           FROM bilhete';
 
                             $resultRoutes = mysqli_query($conn, $sqlRoutes);
@@ -123,7 +124,7 @@
                                         <td>'.$row['dataPartida'].'</td>
                                         <td>'.$row['dataChegada'].'</td>
                                         <td>'.$row['Preço'].'€</td>
-                                        <td>'.$row['capacidade'].'</td>
+                                        <td>'.$row['Capacidade'].'</td>
                                         <td>
                                             <form action="deleteRoute.php" method="POST">
                                                 <input type="hidden" name="idBilhete" value="' . $row['idBilhete'] . '">
@@ -146,57 +147,78 @@
                 </form>
                 <div class="user-details">
                     <h4>Detalhes do Utilizador</h4>
-                    <form>
+                    <form class="" action="updateUser.php" method="post">
                         <?php
                             if (isset($_SESSION['searchUserEmail'])) {
                                 echo '<label for="name">Nome</label>
-                                    <input type="text" id="name" value="'.$_SESSION['searchUserName'].'" readonly>
+                                    <input type="text" name="name" value="'.$_SESSION['searchUserName'].'">
 
                                     <label for="email">Email</label>
-                                    <input type="email" id="email" value="'.$_SESSION['searchUserEmail'].'" readonly>
+                                    <input type="email" name="email" value="'.$_SESSION['searchUserEmail'].'">
                                     
                                     <label for="email">Password</label>
-                                    <input type="email" id="email" value="'.$_SESSION['searchUserPassword'].'" readonly>
+                                    <input type="text" name="password" value="'.$_SESSION['searchUserPassword'].'">
                                     
                                     <label for="email">Morada</label>
-                                    <input type="email" id="email" value="'.$_SESSION['searchUserAdress'].'" readonly>
+                                    <input type="text" name="address" value="'.$_SESSION['searchUserAdress'].'">
                                     
                                     <label for="email">Tipo de Utilizador</label>
-                                    <input type="email" id="email" value="'.$_SESSION['searchUserType'].'" readonly>
+                                    <input type="text" name="type" value="'.$_SESSION['searchUserType'].'">
                                     
                                     <label for="email">Saldo</label>
-                                    <input type="email" id="email" value="'.$_SESSION['searchUserMoney'].'" readonly>';
+                                    <input type="number" step="0.01" min="0" name="money" value="'.$_SESSION['searchUserMoney'].'">';
+
+                                    if ($_SESSION['searchUserState'] = 'Pendente') {
+                                        echo '<label for="status">Estado</label>
+                                            <select name="status">
+                                                <option value="valid">Válido</option>
+                                                <option value="invalid">Inválido</option>
+                                                <option value="pending" selected>Pendente</option>
+                                            </select>';
+                                    } else if ($_SESSION['searchUserState'] = 'Válido') {
+                                        echo '<label for="status">Estado</label>
+                                            <select id="status">
+                                                <option value="valid" selected>Válido</option>
+                                                <option value="invalid">Inválido</option>
+                                                <option value="pending">Pendente</option>
+                                            </select>';
+                                    } else if ($_SESSION['searchUserState'] = 'Inválido') {
+                                        echo '<label for="status">Estado</label>
+                                            <select id="status">
+                                                <option value="valid">Válido</option>
+                                                <option value="invalid" selected>Inválido</option>
+                                                <option value="pending">Pendente</option>
+                                            </select>';
+                                    }
                             } else {
                                 echo '<label for="name">Nome</label>
-                                    <input type="text" id="name" value="" readonly>
+                                    <input type="text" id="name" value="" disabled>
 
                                     <label for="email">Email</label>
-                                    <input type="email" id="email" value="" readonly>
+                                    <input type="email" id="email" value="" disabled>
                                     
                                     <label for="email">Password</label>
-                                    <input type="email" id="email" value="" readonly>
+                                    <input type="email" id="email" value="" disabled>
                                     
                                     <label for="email">Morada</label>
-                                    <input type="email" id="email" value="" readonly>
+                                    <input type="email" id="email" value="" disabled>
                                     
                                     <label for="email">Tipo de Utilizador</label>
-                                    <input type="email" id="email" value="" readonly>
+                                    <input type="email" id="email" value="" disabled>
                                     
                                     <label for="email">Saldo</label>
-                                    <input type="email" id="email" value="" readonly>';
+                                    <input type="email" id="email" value="" disabled>';
                             }
                         ?>
 
-                        <label for="status">Estado</label>
-                        <select id="status">
-                            <option value="valid">Válido</option>
-                            <option value="invalid">Inválido</option>
-                            <option value="pending">Pendente</option>
-                        </select>
-
                         <button type="submit">Salvar Alterações</button>
                     </form>
-                    <button class="delete-user">Excluir Utilizador</button>
+                    <?php
+                        echo '<form action="deleteUser.php" method="POST">
+                                <input type="hidden" name="idUtilizador" value="' . $_SESSION['searchUserId'] . '"> 
+                                <button type="submit" class="delete">Excluir</button>
+                            </form>'
+                    ?>
                 </div>
             </section>
         </div>
