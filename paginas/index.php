@@ -1,15 +1,6 @@
 <?php
+    include ('../basedados/basedados.h');
     session_start();
-
-    $host = 'localhost';
-    $dbusername = 'root';
-    $dbpassword = '';
-    $dbname = 'FelixBus';
-
-    $conn = new mysqli($host, $dbusername, $dbpassword, $dbname);
-    if(! $conn ){
-        die('Could not connect: ' . mysqli_error($conn));
-    }
 ?>
 
 <!DOCTYPE html>
@@ -63,9 +54,7 @@
                             $resultSaldo = mysqli_query($conn, $sqlSaldo);
 
                             while ($rowSaldo = mysqli_fetch_assoc($resultSaldo)) {
-                                echo '<form action="profile.php" method=”GET”>
-                                        <button> Saldo: '  .$rowSaldo['saldo']. '€</button>
-                                    </form>';
+                                echo '<button> Saldo: '  .$rowSaldo['saldo']. '€</button>';
                             }
 
                             echo '<form action="logout.php" method=”GET”>
@@ -85,23 +74,22 @@
     <section>
         <div class="container">
             <h2>Para onde vamos?</h2>
-            <div class="pesquisa">
-                <div class="cidades">
-                    <label for="partida">Partida:</label>
-                    <input type="text" id="partida" placeholder="Ex: Lisboa">
+            <form action="searchRoute.php" method="POST">
+                <div class="pesquisa">
+                    <div class="cidades">
+                        <label for="partida">Partida:</label>
+                        <input type="text" id="partida" name="start" placeholder="Ex: Lisboa">
+                    </div>
+                    <div class="cidades">
+                        <label for="chegada">Chegada:</label>
+                        <input type="text" id="chegada" name="end" placeholder="Ex: Porto">
+                    </div>
+                    
+                    <div class="pesquisarBtn" style="display: flex; align-items: flex-end;">
+                            <button>Pesquisar</button>
+                    </div>
                 </div>
-                <div class="cidades">
-                    <label for="chegada">Chegada:</label>
-                    <input type="text" id="chegada" placeholder="Ex: Porto">
-                </div>
-                
-                <div class="pesquisarBtn" style="display: flex; align-items: flex-end;">
-                     <form action="viewRoutes.php" method=”GET”>
-                        <button>Pesquisar</button>
-                    </form>
-                </div>
-
-            </div>
+            </form>
         </div>
     </section>
 
@@ -110,21 +98,23 @@
         <div class="container">
             <h2>Viagens adicionadas recentemente</h2>
             <div class="cards">
-                <div class="card">
-                    <h3>Lisboa</h3>
-                    <p>A partir de €10</p>
-                    <a href="#">Comprar Bilhete</a>
-                </div>
-                <div class="card">
-                    <h3>Porto</h3>
-                    <p>A partir de €15</p>
-                    <a href="#">Comprar Bilhete</a>
-                </div>
-                <div class="card">
-                    <h3>Faro</h3>
-                    <p>A partir de €20</p>
-                    <a href="#">Comprar Bilhete</a>
-                </div>
+                <?php
+                    $sqlRecentRoutes = 'SELECT Partida, Chegada, dataPartida, dataChegada, Preço
+                                        FROM bilhete
+                                        ORDER BY idBilhete desc
+                                        LIMIT 5';
+
+                    $resultRecentRoutes = mysqli_query($conn, $sqlRecentRoutes);
+
+                    while ($row = mysqli_fetch_array($resultRecentRoutes)) {
+                        echo '<div class="card">
+                                <h3>'.$row['Partida'].' - '.$row['Chegada'].'</h3>
+                                <p>'.$row['dataPartida'].'</p>
+                                <p>'.$row['Preço'].'€</p>
+                                <button>Comprar</button>
+                            </div>';
+                    }
+                ?>
             </div>
         </div>
     </section>

@@ -1,15 +1,6 @@
 <?php
+    include ('../basedados/basedados.h');
     session_start();
-
-    $host = 'localhost';
-    $dbusername = 'root';
-    $dbpassword = '';
-    $dbname = 'FelixBus';
-
-    $conn = new mysqli($host, $dbusername, $dbpassword, $dbname);
-    if(! $conn ){
-        die('Could not connect: ' . mysqli_error($conn));
-    }
 ?>
 
 <!DOCTYPE html>
@@ -63,9 +54,7 @@
                             $resultSaldo = mysqli_query($conn, $sqlSaldo);
 
                             while ($rowSaldo = mysqli_fetch_assoc($resultSaldo)) {
-                                echo '<form action="profile.php" method=”GET”>
-                                        <button> Saldo: '  .$rowSaldo['saldo']. '€</button>
-                                    </form>';
+                                echo '<button> Saldo: '  .$rowSaldo['saldo']. '€</button>';
                             }
 
                             echo '<form action="logout.php" method=”GET”>
@@ -82,45 +71,42 @@
         </div>
     </header>
 
-    <main>
-        <section>
-            <div class="container">
-                <div class="pesquisa">
-                    <div class="cidades">
-                        <label for="partida">Partida:</label>
-                        <input type="text" id="partida" placeholder="Ex: Lisboa">
-                    </div>
-                    <div class="cidades">
-                        <label for="chegada">Chegada:</label>
-                        <input type="text" id="chegada" placeholder="Ex: Porto">
-                    </div>
-                    <div class="pesquisarBtn" style="display: flex; align-items: flex-end;">
-                        <button>Pesquisar</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="ticket-list">
-            <div class="container">
-                <h2>Bilhetes Disponíveis</h2>
-                <div class="tickets">
-                    <div class="ticket">
-                        <h3>Lisboa → Porto</h3>
-                        <p><strong>Horário:</strong> 10:00 - 14:00</p>
-                        <p><strong>Preço:</strong> €15</p>
-                        <button class="buy-btn">Comprar Bilhete</button>
-                    </div>
-                    <div class="ticket">
-                        <h3>Lisboa → Faro</h3>
-                        <p><strong>Horário:</strong> 12:00 - 16:00</p>
-                        <p><strong>Preço:</strong> €20</p>
-                        <button class="buy-btn">Comprar Bilhete</button>
-                    </div>
-                    <!-- Mais bilhetes podem ser listados dinamicamente -->
-                </div>
-            </div>
-        </section>
+    <main class="transactions">
+        <div class="container">
+            <h2>Minhas Transações</h2>
+            <p>Aqui você pode verificar o histórico completo de todas as transações realizadas na sua conta.</p>
+            <table class="transactions-table">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Descrição</th>
+                        <th>Valor (€)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2024-01-15</td>
+                        <td>Adição à carteira</td>
+                        <td>+50.00</td>
+                    </tr>
+                    <tr>
+                        <td>2024-01-12</td>
+                        <td>Bilhete: Lisboa</td>
+                        <td>-15.00</td>
+                    </tr>
+                    <tr>
+                        <td>2024-01-10</td>
+                        <td>Retirada da carteira</td>
+                        <td>-20.00</td>
+                    </tr>
+                    <tr>
+                        <td>2024-01-05</td>
+                        <td>Adição à carteira</td>
+                        <td>+30.00</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </main>
 
     <footer class="footer">

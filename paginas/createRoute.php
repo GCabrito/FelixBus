@@ -1,16 +1,6 @@
 <?php
+    include ('../basedados/basedados.h');
     session_start();
-
-    //ligar à base de dados
-    $host = 'localhost';
-    $dbusername = 'root';
-    $dbpassword = '';
-    $dbname = 'FelixBus';
-
-    $conn = new mysqli($host, $dbusername, $dbpassword, $dbname);
-    if(! $conn ){
-        die('Could not connect: ' . mysqli_error($conn));
-    }
     
     $origin = $_POST["origin"];
     $destination = $_POST["destination"];

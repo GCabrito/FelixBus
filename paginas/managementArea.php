@@ -1,15 +1,6 @@
 <?php
+    include ('../basedados/basedados.h');
     session_start();
-
-    $host = 'localhost';
-    $dbusername = 'root';
-    $dbpassword = '';
-    $dbname = 'FelixBus';
-
-    $conn = new mysqli($host, $dbusername, $dbpassword, $dbname);
-    if(! $conn ){
-        die('Could not connect: ' . mysqli_error($conn));
-    }
 ?>
 
 <!DOCTYPE html>
@@ -63,9 +54,7 @@
                             $resultSaldo = mysqli_query($conn, $sqlSaldo);
 
                             while ($rowSaldo = mysqli_fetch_assoc($resultSaldo)) {
-                                echo '<form action="profile.php" method=”GET”>
-                                        <button> Saldo: '  .$rowSaldo['saldo']. '€</button>
-                                    </form>';
+                                echo '<button> Saldo: '  .$rowSaldo['saldo']. '€</button>';
                             }
 
                             echo '<form action="logout.php" method=”GET”>

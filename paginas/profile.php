@@ -1,15 +1,6 @@
 <?php
+    include ('../basedados/basedados.h');
     session_start();
-
-    $host = 'localhost';
-    $dbusername = 'root';
-    $dbpassword = '';
-    $dbname = 'FelixBus';
-
-    $conn = new mysqli($host, $dbusername, $dbpassword, $dbname);
-    if(! $conn ){
-        die('Could not connect: ' . mysqli_error($conn));
-    }
 ?>
 
 <!DOCTYPE html>
@@ -63,9 +54,7 @@
                             $resultSaldo = mysqli_query($conn, $sqlSaldo);
 
                             while ($rowSaldo = mysqli_fetch_assoc($resultSaldo)) {
-                                echo '<form action="profile.php" method=”GET”>
-                                        <button> Saldo: '  .$rowSaldo['saldo']. '€</button>
-                                    </form>';
+                                echo '<button> Saldo: '  .$rowSaldo['saldo']. '€</button>';
                             }
 
                             echo '<form action="logout.php" method=”GET”>
@@ -89,6 +78,48 @@
                 <!-- Editar dados pessoais -->
                 <section class="personal-info">
                     <h3>Editar Dados Pessoais</h3>
+                    <?php
+                        if (isset($_SESSION["email"])) {
+                            $sqlNome = "SELECT nome
+                                        FROM utilizador
+                                        WHERE email = '" .$_SESSION["email"]."'";
+
+                            $resultNome = mysqli_query($conn, $sqlNome);
+
+                            
+
+                        }
+
+                        echo '<form action="updateUser.php" method="POST">
+                                <div class="form-group">
+                                    <label for="username">Nome de Utilizador:</label>
+                                    <input type="text" id="username" name="username" placeholder="exemplo123" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="completeName">Nome Completo:</label>
+                                    <input type="text" id="completeName" name="completeName" placeholder="exemplo" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email:</label>
+                                    <input type="email" id="email" name="email" placeholder="exemplo@gmail.com" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="address">Morada:</label>
+                                    <input type="text" id="address" name="address" placeholder="Rua do Exemplo" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">Nova Palavra-passe:</label>
+                                    <input type="password" id="password" name="password" placeholder="">
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">Confirmar Nova Palavra-passe:</label>
+                                    <input type="password" id="password" name="password" placeholder="">
+                                </div>
+                                <div style="text-align: end;">
+                                    <button type="submit" class="btn">Guardar Alterações</button>
+                                </div>
+                            </form>';
+                    ?>
                     <form action="update_profile.php" method="POST">
                         <div class="form-group">
                             <label for="username">Nome de Utilizador:</label>
