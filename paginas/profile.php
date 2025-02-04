@@ -73,95 +73,73 @@
 
     <main class="profile">
         <div class="container">
-            <h2>Meu Perfil</h2>
+            <h3>Meu Perfil</h3>
             <div class="profile-sections">
                 <!-- Editar dados pessoais -->
                 <section class="personal-info">
                     <h3>Editar Dados Pessoais</h3>
                     <?php
                         if (isset($_SESSION["email"])) {
-                            $sqlNome = "SELECT nome
-                                        FROM utilizador
-                                        WHERE email = '" .$_SESSION["email"]."'";
+                            $sqlUserData = "SELECT *
+                                            FROM utilizador
+                                            WHERE email = '" .$_SESSION["email"]."'";
 
-                            $resultNome = mysqli_query($conn, $sqlNome);
+                            $resultUserData = mysqli_query($conn, $sqlUserData);
 
-                            
-
+                            while ($rowUserData = mysqli_fetch_array($resultUserData)) {
+                                echo '<form action="changeData.php" method="POST">
+                                        <div class="form-group">
+                                            <label for="username">Nome:</label>
+                                            <input type="text" id="name" name="name" value="'.$rowUserData['nome'].'" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="email">Email:</label>
+                                            <input type="email" id="email" name="email" value="'.$rowUserData['email'].'" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="address">Morada:</label>
+                                            <input type="text" id="address" name="address" value="'.$rowUserData['morada'].'" required>
+                                        </div>
+                                        <div style="text-align: end;">
+                                            <button type="submit" class="btn">Guardar Alterações</button>
+                                        </div>
+                                    </form>';
+                            }
                         }
-
-                        echo '<form action="updateUser.php" method="POST">
-                                <div class="form-group">
-                                    <label for="username">Nome de Utilizador:</label>
-                                    <input type="text" id="username" name="username" placeholder="exemplo123" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="completeName">Nome Completo:</label>
-                                    <input type="text" id="completeName" name="completeName" placeholder="exemplo" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="email">Email:</label>
-                                    <input type="email" id="email" name="email" placeholder="exemplo@gmail.com" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="address">Morada:</label>
-                                    <input type="text" id="address" name="address" placeholder="Rua do Exemplo" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="password">Nova Palavra-passe:</label>
-                                    <input type="password" id="password" name="password" placeholder="">
-                                </div>
-                                <div class="form-group">
-                                    <label for="password">Confirmar Nova Palavra-passe:</label>
-                                    <input type="password" id="password" name="password" placeholder="">
-                                </div>
-                                <div style="text-align: end;">
-                                    <button type="submit" class="btn">Guardar Alterações</button>
-                                </div>
-                            </form>';
                     ?>
-                    <form action="update_profile.php" method="POST">
-                        <div class="form-group">
-                            <label for="username">Nome de Utilizador:</label>
-                            <input type="text" id="username" name="username" placeholder="exemplo123" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="completeName">Nome Completo:</label>
-                            <input type="text" id="completeName" name="completeName" placeholder="exemplo" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email:</label>
-                            <input type="email" id="email" name="email" placeholder="exemplo@gmail.com" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="address">Morada:</label>
-                            <input type="text" id="address" name="address" placeholder="Rua do Exemplo" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Nova Palavra-passe:</label>
-                            <input type="password" id="password" name="password" placeholder="">
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Confirmar Nova Palavra-passe:</label>
-                            <input type="password" id="password" name="password" placeholder="">
-                        </div>
-                        <div style="text-align: end;">
-                            <button type="submit" class="btn">Guardar Alterações</button>
-                        </div>
-                    </form>
                 </section>
 
                 <!-- Carteira -->
                 <section class="wallet">
                     <h3>Minha Carteira</h3>
-                    <p>Saldo Disponível: <span class="wallet-balance">€100.00</span></p>
-                    <form action="update_wallet.php" method="POST" class="wallet-actions">
+                    <?php
+                        if (isset($_SESSION["email"])) {
+                            $sqlUserMoney = "SELECT saldo
+                                            FROM utilizador
+                                            WHERE email = '" .$_SESSION["email"]."'";
+
+                            $resultUserMoney = mysqli_query($conn, $sqlUserMoney);
+
+                            while ($rowUserMoney = mysqli_fetch_array($resultUserMoney)) {
+                                echo '<p>Saldo Disponível: <span class="wallet-balance">'.$rowUserMoney['saldo'].' €</span></p>';
+                            }
+                        }
+                    ?>
+                    <form action="addMoney.php" method="POST" class="wallet-actions">
                         <div class="form-group">
                             <label for="wallet-amount">Valor (€):</label>
                             <input type="number" id="wallet-amount" name="amount" step="0.01" placeholder="Insira o valor" required>
                         </div>
                         <div class="wallet-buttons">
                             <button type="submit" name="action" value="add" class="btn">Adicionar</button>
+                        </div>
+                    </form>
+                    <form action="takeMoney.php" method="POST" class="wallet-actions">
+                        <div class="form-group">
+                            <label for="wallet-amount">Valor (€):</label>
+                            <input type="number" id="wallet-amount" name="amount" step="0.01" placeholder="Insira o valor" required>
+                        </div>
+                        <div class="wallet-buttons">
                             <button type="submit" name="action" value="withdraw" class="btn">Retirar</button>
                         </div>
                     </form>
@@ -173,6 +151,7 @@
                     <table class="tickets-table">
                         <thead>
                             <tr>
+                                <th>Partida</th>
                                 <th>Destino</th>
                                 <th>Data</th>
                                 <th>Preço</th>
@@ -180,18 +159,67 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <?php
+                                $sql = "SELECT b.Partida, b.Chegada, b.dataPartida, b.Preço, b.idBilhete
+                                        FROM bilhete b INNER JOIN bilhetes_comprados bc
+                                            ON b.idBilhete = bc.idBilhete
+                                        INNER JOIN utilizador u
+                                            ON bc.idUtilizador = u.idUtilizador
+                                        WHERE u.email = '" .$_SESSION["email"]."'";
+
+                                $result = mysqli_query($conn, $sql);
+
+                                if (mysqli_num_rows($result) > 0) {
+                                    while ($row = mysqli_fetch_array($result)) {
+                                        echo '<tr>
+                                                <td>'.$row['Partida'].'</td>
+                                                <td>'.$row['Chegada'].'</td>
+                                                <td>'.$row['dataPartida'].'</td>
+                                                <td>'.$row['Preço'].'€</td>
+                                                <td>
+                                                    <form action="cancelTicket.php" method="POST">
+                                                        <input type="hidden" name="idBilhete" value="' . $row['idBilhete'] . '">
+                                                        <input type="hidden" name="preco" value="' . $row['Preço'] . '">
+                                                        <button type="submit" class="btn-cancel">Cancelar</button>
+                                                    </form>
+                                                </td>
+                                            </tr>';
+                                    }
+                                }
+                            ?>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section class="transactions">
+                    <h3>Minhas Transações</h3>
+                    <table class="transactions-table">
+                        <thead>
                             <tr>
-                                <td>Lisboa</td>
-                                <td>2024-01-15</td>
-                                <td>€15</td>
-                                <td><button class="btn-cancel">Cancelar</button></td>
+                                <th>Data</th>
+                                <th>Descrição</th>
+                                <th>Valor (€)</th>
                             </tr>
-                            <tr>
-                                <td>Porto</td>
-                                <td>2024-02-10</td>
-                                <td>€20</td>
-                                <td><button class="btn-cancel">Cancelar</button></td>
-                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                                $sql = "SELECT t.dataTransacao, t.descricao, t.valor
+                                        FROM transacoes t INNER JOIN utilizador u
+                                        on t.idUtilizador = u.idUtilizador
+                                        WHERE u.email = '" .$_SESSION["email"]."'";
+
+                                $result = mysqli_query($conn, $sql);
+
+                                if (mysqli_num_rows($result) > 0) {
+                                    while ($row = mysqli_fetch_array($result)) {
+                                        echo '<tr>
+                                                <td>'.$row['dataTransacao'].'</td>
+                                                <td>'.$row['descricao'].'</td>
+                                                <td>'.$row['valor'].'€</td>
+                                            </tr>';
+                                    }
+                                }
+                            ?>
                         </tbody>
                     </table>
                 </section>
@@ -206,3 +234,7 @@
     </footer>
 </body>
 </html>
+
+<?php
+    mysqli_close($conn);
+?>

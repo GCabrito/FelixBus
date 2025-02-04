@@ -2,8 +2,11 @@
     include ('../basedados/basedados.h');
     session_start();
 
-    $start = $_POST['start'];
-    $end = $_POST['end'];
+    $start = mysqli_real_escape_string($conn, $_POST['start']);
+    $end = mysqli_real_escape_string($conn, $_POST['end']);
+
+    unset($_SESSION['searchRouteStart']);
+    unset($_SESSION['searchRouteEnd']);
 
     if (!empty($start) && !empty($end)) {
         $sql = "SELECT idBilhete, Partida, Chegada, dataPartida, dataChegada, Preço
@@ -24,7 +27,7 @@
             echo '<script>alert("Não foi encontrada nenhuma rota.");</script>';
             echo '<script>window.location.href = "index.php";</script>';
         }
-    } elseif (!empty($start) && empty($end)) {
+    } elseif (!empty($start)) {
         $sql = "SELECT idBilhete, Partida, Chegada, dataPartida, dataChegada, Preço
                 FROM bilhete
                 WHERE Partida = '$start'";
@@ -42,7 +45,7 @@
             echo '<script>window.location.href = "index.php";</script>';
         }
 
-    } elseif (!empty($end) && empty($start)) {
+    } elseif (!empty($end)) {
         $sql = "SELECT idBilhete, Partida, Chegada, dataPartida, dataChegada, Preço
                 FROM bilhete
                 WHERE Chegada = '$end'";

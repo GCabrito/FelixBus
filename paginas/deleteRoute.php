@@ -3,8 +3,8 @@
     session_start();
     
     if (isset($_POST['idBilhete'])){
-        $idBilhete = $_POST['idBilhete'];
-
+        $idBilhete = mysqli_real_escape_string($conn, $_POST['idBilhete']);
+        
         $sql = "DELETE FROM bilhete
             WHERE idBilhete = '$idBilhete'";
 

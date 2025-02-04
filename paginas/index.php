@@ -99,7 +99,7 @@
             <h2>Viagens adicionadas recentemente</h2>
             <div class="cards">
                 <?php
-                    $sqlRecentRoutes = 'SELECT Partida, Chegada, dataPartida, dataChegada, Preço
+                    $sqlRecentRoutes = 'SELECT *
                                         FROM bilhete
                                         ORDER BY idBilhete desc
                                         LIMIT 5';
@@ -111,7 +111,13 @@
                                 <h3>'.$row['Partida'].' - '.$row['Chegada'].'</h3>
                                 <p>'.$row['dataPartida'].'</p>
                                 <p>'.$row['Preço'].'€</p>
-                                <button>Comprar</button>
+                                <form action="buyTicket.php" method="POST">
+                                    <input type="hidden" name="idBilhete" value="' . $row['idBilhete'] . '">
+                                    <input type="hidden" name="preco" value="' . $row['Preço'] . '">
+                                    <input type="hidden" name="partida" value="' . $row['Partida'] . '">
+                                    <input type="hidden" name="chegada" value="' . $row['Chegada'] . '">
+                                    <button type="submit" class="buy-btn">Comprar Bilhete</button>
+                                </form>
                             </div>';
                     }
                 ?>
@@ -141,3 +147,7 @@
     </footer>
 </body>
 </html>
+
+<?php
+    mysqli_close($conn);
+?>

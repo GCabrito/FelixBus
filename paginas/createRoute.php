@@ -2,12 +2,12 @@
     include ('../basedados/basedados.h');
     session_start();
     
-    $origin = $_POST["origin"];
-    $destination = $_POST["destination"];
-    $startTime = $_POST["startTime"];
-    $arriveTime = $_POST["arriveTime"];
-    $price = $_POST["price"];
-    $capacity = $_POST["capacity"];
+    $origin = mysqli_real_escape_string($conn, $_POST["origin"]) ;
+    $destination = mysqli_real_escape_string($conn, $_POST["destination"]);
+    $startTime = mysqli_real_escape_string($conn, $_POST["startTime"]);
+    $arriveTime = mysqli_real_escape_string($conn, $_POST["arriveTime"]);
+    $price = mysqli_real_escape_string($conn, $_POST["price"]);
+    $capacity = mysqli_real_escape_string($conn, $_POST["capacity"]);
 
     $sql = "INSERT INTO bilhete (Partida, Chegada, dataPartida, dataChegada, Preço, Capacidade)
             VALUES ('$origin', '$destination', '$startTime', '$arriveTime', '$price', '$capacity')";

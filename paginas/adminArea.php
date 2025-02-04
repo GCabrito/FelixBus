@@ -127,6 +127,71 @@
                 </table>
             </section>
 
+            <!-- Validar Utilizadores -->
+             <section class="user-validation">
+                <h3>Validar Utilizadores</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Estado</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                            $sqlUsers = "SELECT idUtilizador, nome, email, estado
+                                         FROM utilizador
+                                         WHERE estado = 'Pendente'";
+
+                            $resultUsers = mysqli_query($conn, $sqlUsers);
+
+                            while ($row = mysqli_fetch_array($resultUsers)) {
+                                echo '<tr>
+                                        <td>'.$row['nome'].'</td>
+                                        <td>'.$row['email'].'</td>
+                                        <td>'.$row['estado'].'</td>
+                                        <td>
+                                            <form action="validateUser.php" method="POST">
+                                                <input type="hidden" name="idUtilizador" value="' . $row['idUtilizador'] . '">
+                                                <button type="submit" class="approve-btn">Validar</button>
+                                            </form>
+                                            <form action="invalidateUser.php" method="POST">
+                                                <input type="hidden" name="idUtilizador" value="' . $row['idUtilizador'] . '">
+                                                <button type="submit" class="reject-btn">Invalidar</button>
+                                            </form>
+                                        </td>
+                                    </tr>';
+                            }
+                        ?>
+                    </tbody>
+                </table>
+             </section>
+
+            <!-- Adicionar Utilizadores -->
+            <h3>Adicionar Utilizadores</h3>
+            <section class ="add-users">
+                <form action="addUser.php" method="POST">
+                    <label for="name">Nome</label>
+                    <input type="text" name="name" value="">
+
+                    <label for="email">Email</label>
+                    <input type="email" name="email" value="">
+                    
+                    <label for="email">Password</label>
+                    <input type="text" name="password" value="">
+                    
+                    <label for="email">Morada</label>
+                    <input type="text" name="address" value="">
+                    
+                    <label for="email">Tipo de Utilizador</label>
+                    <input type="text" name="type" value="">
+
+                    <button type="submit">Criar utilizador</button>
+                </form>
+            </section>
+
             <!-- Gestão de Utilizadores -->
             <section class="user-management">
                 <h3>Gestão de Utilizadores</h3>
@@ -152,10 +217,7 @@
                                     <input type="text" name="address" value="'.$_SESSION['searchUserAdress'].'">
                                     
                                     <label for="email">Tipo de Utilizador</label>
-                                    <input type="text" name="type" value="'.$_SESSION['searchUserType'].'">
-                                    
-                                    <label for="email">Saldo</label>
-                                    <input type="number" step="0.01" min="0" name="money" value="'.$_SESSION['searchUserMoney'].'">';
+                                    <input type="text" name="type" value="'.$_SESSION['searchUserType'].'">';
 
                                     if ($_SESSION['searchUserState'] = 'Pendente') {
                                         echo '<label for="status">Estado</label>
@@ -193,9 +255,6 @@
                                     <input type="email" id="email" value="" disabled>
                                     
                                     <label for="email">Tipo de Utilizador</label>
-                                    <input type="email" id="email" value="" disabled>
-                                    
-                                    <label for="email">Saldo</label>
                                     <input type="email" id="email" value="" disabled>';
                             }
                         ?>
@@ -204,7 +263,6 @@
                     </form>
                     <?php
                         echo '<form action="deleteUser.php" method="POST">
-                                <input type="hidden" name="idUtilizador" value="' . $_SESSION['searchUserId'] . '"> 
                                 <button type="submit" class="delete">Excluir</button>
                             </form>'
                     ?>
@@ -220,3 +278,7 @@
     </footer>
 </body>
 </html>
+
+<?php
+    mysqli_close($conn);
+?>

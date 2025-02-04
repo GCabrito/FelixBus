@@ -78,8 +78,8 @@
             <!-- Pesquisa de Utilizadores -->
             <section class="search-section">
                 <h3>Pesquisar Utilizador</h3>
-                <form class="search-form">
-                    <input type="text" name="username" placeholder="Digite o nome ou email do utilizador" required>
+                <form class="search-form" action="getUser.php" method="POST">
+                    <input type="text" name="email" placeholder="Digite o nome ou email do utilizador" required>
                     <button type="submit">Pesquisar</button>
                 </form>
             </section>
@@ -88,30 +88,30 @@
             <section class="results-section">
                 <h3>Detalhes do Utilizador</h3>
                 <div class="user-details">
-                    <div class="persInfo-management">
-                        <h4>Dados Pessoais</h4>
-                        <form>
-                            <label for="name">Nome Completo</label>
-                            <input type="text" id="name" value="Exemplo Nome" readonly>
-                            
-                            <label for="email">Email</label>
-                            <input type="email" id="email" value="exemplo@felixbus.com" readonly>
-                            
-                            <label for="address">Endereço</label>
-                            <input type="text" id="address" value="Rua Exemplo, 123" readonly>
-                            
-                            <button type="button">Editar Dados</button>
-                        </form>
-                    </div>
 
                     <div class="wallet-management">
                         <h4>Carteira</h4>
-                        <p>Saldo Atual: <strong>€50.00</strong></p>
-                        <form>
+                        <?php
+                            $_SESSION['getUserEmail'] = isset($_SESSION['getUserEmail']) ? $_SESSION['getUserEmail'] : '';
+                            $_SESSION['getUserMoney'] = isset($_SESSION['getUserMoney']) ? $_SESSION['getUserMoney'] : '';
+                            if (isset($_SESSION['getUserEmail'])) {
+                                echo '<p>email do Utilizador: '.$_SESSION['getUserEmail'].'</p>
+                                      <p>Saldo Atual: <strong>'.$_SESSION['getUserMoney'].'€</strong></p>';
+                            } else {
+                                echo '<p>email do Utilizador:</p>
+                                      <p>Saldo Atual:</p>';
+                            }
+                        ?>
+                        <form action="addMoneyToUser.php" method="POST">
                             <label for="amount">Valor (€)</label>
-                            <input type="number" id="amount" placeholder="Digite o valor">
+                            <input type="number" id="amount" name="amount" step="0.01" placeholder="Digite o valor">
                             
                             <button type="submit" class="add">Adicionar</button>
+                        </form>
+                        <form action="takeMoneyFromUser.php" method="POST">
+                            <label for="amount">Valor (€)</label>
+                            <input type="number" id="amount" name="amount" step="0.01" placeholder="Digite o valor">
+                            
                             <button type="submit" class="remove">Remover</button>
                         </form>
                     </div>
@@ -124,25 +124,42 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>ID do Bilhete</th>
                             <th>Origem</th>
                             <th>Destino</th>
                             <th>Data</th>
+                            <th>Preço</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>#12345</td>
-                            <td>Lisboa</td>
-                            <td>Porto</td>
-                            <td>2024-01-15</td>
-                            <td>
-                                <button class="edit-ticket">Editar</button>
-                                <button class="delete-ticket">Excluir</button>
-                            </td>
-                        </tr>
-                        <!-- Mais bilhetes podem ser adicionados dinamicamente -->
+                        <?php
+                            $sql = "SELECT b.Partida, b.Chegada, b.dataPartida, b.Preço, b.idBilhete
+                                    FROM bilhete b INNER JOIN bilhetes_comprados bc
+                                        ON b.idBilhete = bc.idBilhete
+                                    INNER JOIN utilizador u
+                                        ON bc.idUtilizador = u.idUtilizador
+                                    WHERE u.email = '" .$_SESSION['getUserEmail']."'";
+
+                            $result = mysqli_query($conn, $sql);
+
+                            if (mysqli_num_rows($result) > 0) {
+                                while ($row = mysqli_fetch_array($result)) {
+                                    echo '<tr>
+                                            <td>'.$row['Partida'].'</td>
+                                            <td>'.$row['Chegada'].'</td>
+                                            <td>'.$row['dataPartida'].'</td>
+                                            <td>'.$row['Preço'].'€</td>
+                                            <td>
+                                                <form action="cancelTicket.php" method="POST">
+                                                    <input type="hidden" name="idBilhete" value="' . $row['idBilhete'] . '">
+                                                    <input type="hidden" name="preco" value="' . $row['Preço'] . '">
+                                                    <button type="submit" class="delete-ticket">Cancelar</button>
+                                                </form>
+                                            </td>
+                                        </tr>';
+                                }
+                            }
+                        ?>
                     </tbody>
                 </table>
             </section>
@@ -156,3 +173,7 @@
     </footer>
 </body>
 </html>
+
+<?php
+    mysqli_close($conn);
+?>

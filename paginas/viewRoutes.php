@@ -98,37 +98,44 @@
                 <h2>Bilhetes Disponíveis</h2>
                 <div class="tickets">
                     <?php
-                        if (isset($_SESSION['searchRouteStart'])) {
+                        $start = isset($_SESSION['searchRouteStart']) ? $_SESSION['searchRouteStart'] : '';
+                        $end = isset($_SESSION['searchRouteEnd']) ? $_SESSION['searchRouteEnd'] : '';
+
+                        if (!empty($start) && !empty($end)) {
                             $sqlSearchRoute = "SELECT *
                                                FROM bilhete
-                                               WHERE Partida = '".$_SESSION['searchRouteStart']."'";
+                                               WHERE Partida = '$start' AND Chegada = '$end'";
+                        } elseif (!empty($start)) {
+                            $sqlSearchRoute = "SELECT *
+                                               FROM bilhete
+                                               WHERE Partida = '$start'";
 
-                            $resultSearchRoute = mysqli_query($conn, $sqlSearchRoute);
+                        } elseif (!empty($end)) {
+                            $sqlSearchRoute = "SELECT *
+                                               FROM bilhete
+                                               WHERE Chegada = '$end'";
+                        } 
+                        
+                        
+                        $resultSearchRoute = mysqli_query($conn, $sqlSearchRoute);
 
-                            if (mysqli_num_rows($resultSearchRoute) > 0) {
-                                while ($row = mysqli_fetch_array($resultSearchRoute)) {
-                                    echo '<div class="ticket">
-                                            <h3>'.$row['Partida'].' → '.$row['Chegada'].'</h3>
-                                            <p><strong>Horário: </strong>'.$row['dataPartida'].' - '.$row['dataChegada'].'</p>
-                                            <p><strong>Preço:</strong>'.$row['Preço'].' €</p>
-                                            <button class="buy-btn">Comprar Bilhete</button>
-                                        </div>';
-                                }
+                        if (mysqli_num_rows($resultSearchRoute) > 0) {
+                            while ($row = mysqli_fetch_array($resultSearchRoute)) {
+                                echo '<div class="ticket">
+                                        <h3>'.$row['Partida'].' → '.$row['Chegada'].'</h3>
+                                        <p><strong>Horário: </strong>'.$row['dataPartida'].' - '.$row['dataChegada'].'</p>
+                                        <p><strong>Preço: </strong>'.$row['Preço'].' €</p>
+                                        <form action="buyTicket.php" method="POST">
+                                            <input type="hidden" name="idBilhete" value="' . $row['idBilhete'] . '">
+                                            <input type="hidden" name="preco" value="' . $row['Preço'] . '">
+                                            <input type="hidden" name="partida" value="' . $row['Partida'] . '">
+                                            <input type="hidden" name="chegada" value="' . $row['Chegada'] . '">
+                                            <button type="submit" class="buy-btn">Comprar Bilhete</button>
+                                        </form>
+                                    </div>';
                             }
                         }
                     ?>
-                    <div class="ticket">
-                        <h3>Lisboa → Porto</h3>
-                        <p><strong>Horário:</strong> 10:00 - 14:00</p>
-                        <p><strong>Preço:</strong> €15</p>
-                        <button class="buy-btn">Comprar Bilhete</button>
-                    </div>
-                    <div class="ticket">
-                        <h3>Lisboa → Faro</h3>
-                        <p><strong>Horário:</strong> 12:00 - 16:00</p>
-                        <p><strong>Preço:</strong> €20</p>
-                        <button class="buy-btn">Comprar Bilhete</button>
-                    </div>
                     <!-- Mais bilhetes podem ser listados dinamicamente -->
                 </div>
             </div>
@@ -142,3 +149,7 @@
     </footer>
 </body>
 </html>
+
+<?php
+    mysqli_close($conn);
+?>

@@ -2,7 +2,7 @@
     include ('../basedados/basedados.h');
     session_start();
     
-    $userEmail = $_POST["userEmail"];
+    $userEmail = mysqli_real_escape_string($conn, $_POST["userEmail"]);
 
     $sql = "SELECT u.idUtilizador, u.nome, u.email, u.pass, u.morada, t.Nome, u.estado, u.saldo
             FROM utilizador u join tipoutilizador t
