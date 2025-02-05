@@ -116,7 +116,7 @@ CREATE TABLE `utilizador` (
 
 INSERT INTO `utilizador` (`idUtilizador`, `nome`, `pass`, `email`, `morada`, `tipoUtilizador`, `estado`, `saldo`) VALUES
 (1, 'admin', 'admin', 'admin', 'rua admin', 1, 'Válido', 200.00),
-(2, 'funcionario', 'funcionario', 'funcionario', 'rua funcionario', 2, 'Válido', 200.00);
+(2, 'funcionario', 'funcionario', 'funcionario', 'rua funcionario', 2, 'Válido', 200.00),
 (3, 'cliente', 'cliente', 'cliente', 'rua cliente', 3, 'Válido', 0.00);
 
 --
