@@ -1,1 +1,1 @@
-DROP DATABASE IF EXISTS 'felixbus';
+DROP DATABASE IF EXISTS felixbus;
