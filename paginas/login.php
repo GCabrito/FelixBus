@@ -13,12 +13,16 @@
 
     $result = mysqli_query($conn, $sql);
 
-    if ($email == "admin@gmail.com" && $password == "admin") {
+    if ($email == "admin" && $password == "admin") {
         $_SESSION['admin'] = true;
         echo '<script>window.location.href = "index.php"</script>';
         exit;
-    } elseif ($email == "funcionario@gmail.com" && $password == "funcionario") {
+    } elseif ($email == "funcionario" && $password == "funcionario") {
         $_SESSION['funcionario'] = true;
+        echo '<script>window.location.href = "index.php"</script>';
+        exit;
+    } elseif ($email = "cliente" && $password = "cliente") {
+        $_SESSION['cliente'] = true;
         echo '<script>window.location.href = "index.php"</script>';
         exit;
     }

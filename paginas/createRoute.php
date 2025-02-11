@@ -1,5 +1,6 @@
 <?php
     include ('../basedados/basedados.h');
+    include ('loginVerification.php');
     session_start();
     
     $origin = mysqli_real_escape_string($conn, $_POST["origin"]) ;
