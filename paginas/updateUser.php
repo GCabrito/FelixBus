@@ -1,6 +1,14 @@
 <?php
     include ('../basedados/basedados.h');
-    include ('loginVerification.php');
+    
+    if (!isset($_SESSION['email'])) {
+        echo ('<script>alert("É necessário efetuar login");</script>');
+        echo ('<script>window.location.href = "login.html";</script>');
+        exit;
+    } elseif ($_SESSION['admin'] == false) {
+        echo ('<script>alert("Não tem acesso a esta página");</script>');
+    }
+    
     session_start();
     
     $name = mysqli_real_escape_string($conn, $_POST['name']);
