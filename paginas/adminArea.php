@@ -1,6 +1,15 @@
 <?php
     session_start();
     include ('../basedados/basedados.h');
+
+    if (!isset($_SESSION['email'])) {
+        echo ('<script>alert("É necessário efetuar login");</script>');
+        echo ('<script>window.location.href = "login.html";</script>');
+        exit;
+    } elseif ($_SESSION['admin'] == false) {
+        echo ('<script>alert("Não tem acesso a esta página");</script>');
+        echo ('<script>window.location.href = "index.php";</script>');
+    }
 ?>
 
 <!DOCTYPE html>

@@ -6,8 +6,9 @@
         echo ('<script>alert("É necessário efetuar login");</script>');
         echo ('<script>window.location.href = "login.html";</script>');
         exit;
-    } elseif ($_SESSION['funcionario'] == false || $_SESSION['admin'] == false) {
+    } elseif (empty($_SESSION['admin']) && empty($_SESSION['funcionario'])) {
         echo ('<script>alert("Não tem acesso a esta página");</script>');
+        echo ('<script>window.location.href = "index.php";</script>');
     }
 
     session_start();

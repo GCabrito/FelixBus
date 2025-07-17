@@ -1,6 +1,7 @@
 <?php
     session_start();
     include ('../basedados/basedados.h');
+    include ('../paginas/loginVerification.php');
 ?>
 
 <!DOCTYPE html>

@@ -8,6 +8,7 @@
         exit;
     } elseif ($_SESSION['admin'] == false) {
         echo ('<script>alert("Não tem acesso a esta página");</script>');
+        echo ('<script>window.location.href = "index.html";</script>');
     }
     
     session_start();
