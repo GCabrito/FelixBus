@@ -1,7 +1,7 @@
 <?php
-    //session_start();
-    include ('../basedados/basedados.h');
-    include ('../paginas/loginVerification.php');
+    //session_start(); // (Comentado porque loginVerification já inicia a sessão)
+    include ('../basedados/basedados.h'); // Inclui a ligação à base de dados
+    include ('../paginas/loginVerification.php'); // Verifica se o utilizador está autenticado
 ?>
 
 <!DOCTYPE html>
@@ -23,18 +23,20 @@
                     </form>
                 
                     <?php 
+                        // Mostra botões de navegação conforme o tipo de utilizador
                         if (isset($_SESSION['admin']) or isset($_SESSION['funcionario'])) {
                             echo'<form action="managementArea.php" method="GET">
                                     <button>Área de Gestão</button>
                                  </form>';
                         }                
-                    
+
                         if (isset($_SESSION['admin'])) {
                             echo'<form action="adminArea.php" method="GET">
                                     <button>Área de Administração</button>
                                  </form>';
                         }
                         
+                        // Se o utilizador estiver autenticado, mostra nome, saldo e botão de logout
                         if (isset($_SESSION["email"])) {
                             $sqlNome = "SELECT nome
                                         FROM utilizador
@@ -62,6 +64,7 @@
                                     <button> Terminar Sessão</button>
                                 </form>';
                         } else {
+                            // Se não estiver autenticado, mostra botão de login
                             echo '<form action="login.html" method=”GET”>
                                     <button> Iniciar Sessão </button>
                                 </form>';
@@ -80,6 +83,7 @@
                 <section class="personal-info">
                     <h3>Editar Dados Pessoais</h3>
                     <?php
+                        // Mostra formulário para editar dados pessoais do utilizador
                         if (isset($_SESSION["email"])) {
                             $sqlUserData = "SELECT *
                                             FROM utilizador
@@ -114,6 +118,7 @@
                 <section class="wallet">
                     <h3>Minha Carteira</h3>
                     <?php
+                        // Mostra saldo disponível na carteira do utilizador
                         if (isset($_SESSION["email"])) {
                             $sqlUserMoney = "SELECT saldo
                                             FROM utilizador
@@ -161,6 +166,7 @@
                         </thead>
                         <tbody>
                             <?php
+                                // Mostra os bilhetes comprados pelo utilizador
                                 $sql = "SELECT b.Partida, b.Chegada, b.dataPartida, b.Preço, b.idBilhete
                                         FROM bilhete b INNER JOIN bilhetes_comprados bc
                                             ON b.idBilhete = bc.idBilhete
@@ -204,6 +210,7 @@
                         </thead>
                         <tbody>
                             <?php
+                                // Mostra as transações do utilizador
                                 $sql = "SELECT t.dataTransacao, t.descricao, t.valor
                                         FROM transacoes t INNER JOIN utilizador u
                                         on t.idUtilizador = u.idUtilizador
@@ -238,5 +245,5 @@
 </html>
 
 <?php
-    mysqli_close($conn);
+    mysqli_close($conn); // Fecha a ligação à base de dados
 ?>

@@ -1,11 +1,13 @@
 <?php
-    session_start();
-    include ('../basedados/basedados.h');
+    session_start(); // Inicia a sessão do utilizador
+    include ('../basedados/basedados.h'); // Inclui a ligação à base de dados
 
+    // Verifica se o utilizador está autenticado
     if (!isset($_SESSION['email'])) {
         echo ('<script>alert("É necessário efetuar login");</script>');
         echo ('<script>window.location.href = "login.html";</script>');
         exit;
+    // Verifica se o utilizador tem permissões de admin
     } elseif ($_SESSION['admin'] == false) {
         echo ('<script>alert("Não tem acesso a esta página");</script>');
         echo ('<script>window.location.href = "index.php";</script>');
@@ -31,18 +33,20 @@
                     </form>
                 
                     <?php 
+                        // Mostra botões de navegação conforme o tipo de utilizador
                         if (isset($_SESSION['admin']) or isset($_SESSION['funcionario'])) {
                             echo'<form action="managementArea.php" method="GET">
                                     <button>Área de Gestão</button>
                                  </form>';
                         }                
-                    
+
                         if (isset($_SESSION['admin'])) {
                             echo'<form action="adminArea.php" method="GET">
                                     <button>Área de Administração</button>
                                  </form>';
                         }
                         
+                        // Mostra nome, saldo e opções de sessão se o utilizador estiver autenticado
                         if (isset($_SESSION["email"])) {
                             $sqlNome = "SELECT nome
                                         FROM utilizador
@@ -110,6 +114,7 @@
                     </thead>
                     <tbody>
                         <?php
+                            // Busca todas as rotas para exibir na tabela de gestão de rotas
                             $sqlRoutes = 'SELECT idBilhete, Partida, Chegada, dataPartida, dataChegada, Preço, Capacidade
                                           FROM bilhete';
 
@@ -150,6 +155,7 @@
                     </thead>
                     <tbody>
                     <?php
+                            // Busca utilizadores pendentes para validação
                             $sqlUsers = "SELECT idUtilizador, nome, email, estado
                                          FROM utilizador
                                          WHERE estado = 'Pendente'";
@@ -212,6 +218,7 @@
                     <h4>Detalhes do Utilizador</h4>
                     <form class="" action="updateUser.php" method="post">
                         <?php
+                            // Mostra detalhes do utilizador pesquisado para edição
                             if (isset($_SESSION['searchUserEmail'])) {
                                 echo '<label for="name">Nome</label>
                                     <input type="text" name="name" value="'.$_SESSION['searchUserName'].'">
@@ -228,6 +235,7 @@
                                     <label for="email">Tipo de Utilizador</label>
                                     <input type="text" name="type" value="'.$_SESSION['searchUserType'].'">';
 
+                                    // Mostra o estado do utilizador com seleção adequada
                                     if ($_SESSION['searchUserState'] = 'Pendente') {
                                         echo '<label for="status">Estado</label>
                                             <select name="status">
@@ -251,6 +259,7 @@
                                             </select>';
                                     }
                             } else {
+                                // Se não houver utilizador pesquisado, mostra campos desativados
                                 echo '<label for="name">Nome</label>
                                     <input type="text" id="name" value="" disabled>
 
@@ -271,6 +280,7 @@
                         <button type="submit">Salvar Alterações</button>
                     </form>
                     <?php
+                        // Botão para excluir utilizador pesquisado
                         echo '<form action="deleteUser.php" method="POST">
                                 <button type="submit" class="delete">Excluir</button>
                             </form>'
@@ -289,5 +299,5 @@
 </html>
 
 <?php
-    mysqli_close($conn);
+    mysqli_close($conn); // Fecha a ligação à base de dados
 ?>

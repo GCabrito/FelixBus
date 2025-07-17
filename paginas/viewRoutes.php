@@ -1,6 +1,6 @@
 <?php
-    session_start();
-    include ('../basedados/basedados.h');
+    session_start(); // Inicia a sessão do utilizador
+    include ('../basedados/basedados.h'); // Inclui a ligação à base de dados
 ?>
 
 <!DOCTYPE html>
@@ -22,18 +22,20 @@
                     </form>
                 
                     <?php 
+                        // Mostra botões de navegação conforme o tipo de utilizador
                         if (isset($_SESSION['admin']) or isset($_SESSION['funcionario'])) {
                             echo'<form action="managementArea.php" method="GET">
                                     <button>Área de Gestão</button>
                                  </form>';
                         }                
-                    
+
                         if (isset($_SESSION['admin'])) {
                             echo'<form action="adminArea.php" method="GET">
                                     <button>Área de Administração</button>
                                  </form>';
                         }
                         
+                        // Se o utilizador estiver autenticado, mostra nome, saldo e botão de logout
                         if (isset($_SESSION["email"])) {
                             $sqlNome = "SELECT nome
                                         FROM utilizador
@@ -61,6 +63,7 @@
                                     <button> Terminar Sessão</button>
                                 </form>';
                         } else {
+                            // Se não estiver autenticado, mostra botão de login
                             echo '<form action="login.html" method=”GET”>
                                     <button> Iniciar Sessão </button>
                                 </form>';
@@ -98,9 +101,11 @@
                 <h2>Bilhetes Disponíveis</h2>
                 <div class="tickets">
                     <?php
+                        // Obtém os parâmetros de pesquisa de rota da sessão
                         $start = isset($_SESSION['searchRouteStart']) ? $_SESSION['searchRouteStart'] : '';
                         $end = isset($_SESSION['searchRouteEnd']) ? $_SESSION['searchRouteEnd'] : '';
 
+                        // Monta a query de pesquisa conforme os parâmetros recebidos
                         if (!empty($start) && !empty($end)) {
                             $sqlSearchRoute = "SELECT *
                                                FROM bilhete
@@ -109,16 +114,16 @@
                             $sqlSearchRoute = "SELECT *
                                                FROM bilhete
                                                WHERE Partida = '$start'";
-
                         } elseif (!empty($end)) {
                             $sqlSearchRoute = "SELECT *
                                                FROM bilhete
                                                WHERE Chegada = '$end'";
                         } 
                         
-                        
+                        // Executa a pesquisa de bilhetes
                         $resultSearchRoute = mysqli_query($conn, $sqlSearchRoute);
 
+                        // Mostra os bilhetes encontrados
                         if (mysqli_num_rows($resultSearchRoute) > 0) {
                             while ($row = mysqli_fetch_array($resultSearchRoute)) {
                                 echo '<div class="ticket">
@@ -151,5 +156,5 @@
 </html>
 
 <?php
-    mysqli_close($conn);
+    mysqli_close($conn); // Fecha a ligação à base de dados
 ?>

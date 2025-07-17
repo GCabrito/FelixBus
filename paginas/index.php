@@ -1,6 +1,6 @@
 <?php
-    session_start();
-    include ('../basedados/basedados.h');
+    session_start(); // Inicia a sessão do utilizador
+    include ('../basedados/basedados.h'); // Inclui a ligação à base de dados
 ?>
 
 <!DOCTYPE html>
@@ -22,18 +22,20 @@
                     </form>
                 
                     <?php 
+                        // Mostra botões de navegação conforme o tipo de utilizador
                         if (isset($_SESSION['admin']) or isset($_SESSION['funcionario'])) {
                             echo'<form action="managementArea.php" method="GET">
                                     <button>Área de Gestão</button>
                                  </form>';
                         }                
-                    
+
                         if (isset($_SESSION['admin'])) {
                             echo'<form action="adminArea.php" method="GET">
                                     <button>Área de Administração</button>
                                  </form>';
                         }
                         
+                        // Se o utilizador estiver autenticado, mostra nome, saldo e botão de logout
                         if (isset($_SESSION["email"])) {
                             $sqlNome = "SELECT nome
                                         FROM utilizador
@@ -61,6 +63,7 @@
                                     <button> Terminar Sessão</button>
                                 </form>';
                         } else {
+                            // Se não estiver autenticado, mostra botão de login
                             echo '<form action="login.html" method=”GET”>
                                     <button> Iniciar Sessão </button>
                                 </form>';
@@ -99,6 +102,7 @@
             <h2>Viagens adicionadas recentemente</h2>
             <div class="cards">
                 <?php
+                    // Busca as 5 viagens mais recentes para mostrar na página inicial
                     $sqlRecentRoutes = 'SELECT *
                                         FROM bilhete
                                         ORDER BY idBilhete desc
@@ -149,5 +153,5 @@
 </html>
 
 <?php
-    mysqli_close($conn);
+    mysqli_close($conn); // Fecha a ligação à base de dados
 ?>

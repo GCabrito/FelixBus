@@ -1,11 +1,13 @@
 <?php
-    session_start();
-    include ('../basedados/basedados.h');
+    session_start(); // Inicia a sessão do utilizador
+    include ('../basedados/basedados.h'); // Inclui a ligação à base de dados
 
+    // Verifica se o utilizador está autenticado
     if (!isset($_SESSION['email'])) {
         echo ('<script>alert("É necessário efetuar login");</script>');
         echo ('<script>window.location.href = "login.html";</script>');
         exit;
+    // Verifica se o utilizador tem permissões de admin ou funcionário
     } elseif (empty($_SESSION['admin']) && empty($_SESSION['funcionario'])) {
         echo ('<script>alert("Não tem acesso a esta página");</script>');
         echo ('<script>window.location.href = "index.php";</script>');
@@ -31,18 +33,20 @@
                     </form>
                 
                     <?php 
+                        // Mostra botões de navegação conforme o tipo de utilizador
                         if (isset($_SESSION['admin']) or isset($_SESSION['funcionario'])) {
                             echo'<form action="managementArea.php" method="GET">
                                     <button>Área de Gestão</button>
                                  </form>';
                         }                
-                    
+
                         if (isset($_SESSION['admin'])) {
                             echo'<form action="adminArea.php" method="GET">
                                     <button>Área de Administração</button>
                                  </form>';
                         }
                         
+                        // Se o utilizador estiver autenticado, mostra nome, saldo e botão de logout
                         if (isset($_SESSION["email"])) {
                             $sqlNome = "SELECT nome
                                         FROM utilizador
@@ -70,6 +74,7 @@
                                     <button> Terminar Sessão</button>
                                 </form>';
                         } else {
+                            // Se não estiver autenticado, mostra botão de login
                             echo '<form action="login.html" method=”GET”>
                                     <button> Iniciar Sessão </button>
                                 </form>';
@@ -101,6 +106,7 @@
                     <div class="wallet-management">
                         <h4>Carteira</h4>
                         <?php
+                            // Mostra email e saldo do utilizador pesquisado (ou campos vazios)
                             $_SESSION['getUserEmail'] = isset($_SESSION['getUserEmail']) ? $_SESSION['getUserEmail'] : '';
                             $_SESSION['getUserMoney'] = isset($_SESSION['getUserMoney']) ? $_SESSION['getUserMoney'] : '';
                             if (isset($_SESSION['getUserEmail'])) {
@@ -142,6 +148,7 @@
                     </thead>
                     <tbody>
                         <?php
+                            // Mostra os bilhetes do utilizador pesquisado
                             $sql = "SELECT b.Partida, b.Chegada, b.dataPartida, b.Preço, b.idBilhete
                                     FROM bilhete b INNER JOIN bilhetes_comprados bc
                                         ON b.idBilhete = bc.idBilhete
@@ -184,5 +191,5 @@
 </html>
 
 <?php
-    mysqli_close($conn);
+    mysqli_close($conn); // Fecha a ligação à base de dados
 ?>
