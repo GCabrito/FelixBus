@@ -1,7 +1,8 @@
 <?php
+    session_start();
     include ('../basedados/basedados.h');
     include ('loginVerification.php');
-    session_start();
+    
 
     $idTicket = mysqli_real_escape_string($conn, $_POST['idBilhete']);
     $price = mysqli_real_escape_string($conn, $_POST['preco']);

@@ -1,6 +1,6 @@
 <?php
-    include ('../basedados/basedados.h');
     session_start();
+    include ('../basedados/basedados.h');
     
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $password = mysqli_real_escape_string($conn, $_POST['password']);

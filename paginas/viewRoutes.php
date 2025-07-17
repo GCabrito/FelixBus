@@ -1,6 +1,6 @@
 <?php
-    include ('../basedados/basedados.h');
     session_start();
+    include ('../basedados/basedados.h');
 ?>
 
 <!DOCTYPE html>

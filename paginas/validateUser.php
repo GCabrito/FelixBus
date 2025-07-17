@@ -1,4 +1,6 @@
 <?php
+    session_start();
+    
     include ('../basedados/basedados.h');
     
     if (!isset($_SESSION['email'])) {

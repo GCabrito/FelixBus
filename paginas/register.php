@@ -1,6 +1,6 @@
 <?php
-    include ('../basedados/basedados.h');
     session_start();
+    include ('../basedados/basedados.h');
     
     $name = mysqli_real_escape_string($conn, $_POST['name']);
     $address = mysqli_real_escape_string($conn, $_POST['address']);
