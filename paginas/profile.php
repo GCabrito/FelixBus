@@ -1,5 +1,5 @@
 <?php
-    session_start();
+    //session_start();
     include ('../basedados/basedados.h');
     include ('../paginas/loginVerification.php');
 ?>
